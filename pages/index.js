@@ -52,6 +52,7 @@ import React, { useState } from 'react';
 function Home({ response }) {
   const [homeSliders, homePage, clients, latestNews, projects, services, blogs] = response;
   const settingsWrap = response[response.length - 1];
+  
   const { siteSetting } = settingsWrap.data;
   // const clientsDataWrap = response[response.length - 1];
   // const { clientsData } = clientsDataWrap.data;
@@ -62,11 +63,11 @@ function Home({ response }) {
   const handleButtonClick = (formType) => {
     setActiveForm(formType);
   };
-  
-
-  return (
+return (
     <>
       <Layout modalForm={true} apiData={response}>
+
+        <div className="scroll-container">
         <Meta title={seoData.title} description={seoData.description} keywords={seoData.keywords} image={seoData.image} />
         {/* Hero Image section */}
         <HeroImage sliderData={homeSliders} buttonText="View more info" buttonLink="#" description={true} />
@@ -186,8 +187,9 @@ function Home({ response }) {
             </div>
             
           </div>
+          
         </section>
-
+      
         {/* banner section */}
         {/* <BannerSection content={richText.highlight} /> */}
         {/* who we are & why choose us section */}
@@ -272,7 +274,10 @@ function Home({ response }) {
         {/* clients section */}
         <ClientSection data={clients.data}/> 
         <BlogSection data={blogs.data.rows} />
+        </div>
+
       </Layout>
+      
     </>
   )
 }

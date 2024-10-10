@@ -9,7 +9,7 @@ const BlogSection = ({ data }) => {
     return (
         <section className="py-8 lg:py-12 bg-[#ECF1F4]">
             <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl mx-auto px-8">
-                <SectionHeader span="" heading="NewsRoom" />
+                <SectionHeader span="" />
                 
                 <div className="flex flex-row lg:flex-row">
                     <div className="w-full lg:pr-8 xl:pr-4 grid lg:grid-cols-3 md:grid-cols-1 gap-x-8">

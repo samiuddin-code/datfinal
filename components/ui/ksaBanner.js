@@ -1,118 +1,77 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 const KsaBanner = () => {
-    const containerRef = useRef(null);
+    const containerRefs = useRef([]);
+    const [loadedImages, setLoadedImages] = useState([false, false, false]);
+
+    const handleImageLoad = (index) => {
+        setLoadedImages((prev) => {
+            const newLoadedImages = [...prev];
+            newLoadedImages[index] = true;
+            return newLoadedImages;
+        });
+    };
 
     useEffect(() => {
-        const handleScroll = () => {
-            if (containerRef.current) {
-                const scrollTop = window.scrollY;
-                const containerHeight = containerRef.current.clientHeight;
-                const offset = Math.min(100, (scrollTop / containerHeight) * 100);
-                containerRef.current.style.setProperty('--scroll-offset', `${offset}%`);
-            }
-        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'scale(1)';
+                } else {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'scale(0.95)'; // Start slightly smaller
+                }
+            });
+        }, { threshold: 0.5 });
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        containerRefs.current.forEach(container => {
+            if (container) observer.observe(container);
+        });
+
+        return () => containerRefs.current.forEach(container => {
+            if (container) observer.unobserve(container);
+        });
     }, []);
 
     return (
-        <section className="relative">
-            {/* <h2 className="font-normal mb-6 text-3xl capitalize md:text-4xl font-neuehaas text-center max-w-two-lines">
-                Experts in Engineering Consulting & Design Solutions.
-            </h2> */}
-            <div className={`relative w-full aspect-w-16 aspect-h-9 imageContainer`} ref={containerRef}>
-                <Image
-                    src="/featured1.webp"
-                    alt="Banner"
-                    layout="responsive"
-                    width={1920}
-                    height={1200}
-                />
-                {/* <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/3 left-1/2 z-20 lg:pt-20 top-20">
-                    <h2 className={`topLeftHeading font-normal text-3xl capitalize md:text-4xl font-neuehaas text-white`}>
-                        A Modern Townhouse design in KSA
-                    </h2>
-                </div> 
-                <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/4 top-2/3 left-1/2 z-20 lg:pt-28 bottom-0">  
-                    <h2 className={`font-normal text-3xl capitalize md:text-4xl font-neuehaas text-white`}>
-                        Townhouse Lara Community, 
-                    </h2>
-                    <h3 className={`font-normal text-lg capitalize md:text-xl font-neuehaas text-white`}>
-                        Mohammadiya, KSA
-                    </h3>
-                </div> */}
-
-<div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/3 left-1/2 z-20 top-8 lg:top-20 sm:top-8">
-    <h2 className="topLeftHeading font-normal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-neuehaas text-white">
-        A Modern Townhouse design in KSA
-    </h2>
-</div>
-
-                {/* <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/4 top-2/3 left-1/2 z-20 lg:pt-28 bottom-0"> */}
-                <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/4 left-1/2 z-20 lg:pt-28 bottom-0">
-                    <h2 className={`font-normal text-lg sm:text-xl pl-2 md:pl-4 md:text-2xl lg:text-3xl font-neuehaas text-white`}>
-                        Townhouse Lara Community,
-                    </h2>
-                    <h3 className={`font-normal text-sm sm:text-base pl-2 md:pl-4 md:text-lg lg:text-xl font-neuehaas text-white`}>
-                        Mohammadiya, KSA
-                    </h3>
+        <section className="relative bg-gray-900 overflow-hidden">
+            {["/featured1.webp", "/featured2.webp", "/featured3.webp"].map((src, index) => (
+                <div
+                    key={index}
+                    className="relative w-full aspect-w-16 aspect-h-9"
+                    ref={(el) => containerRefs.current[index] = el}
+                    style={{
+                        position: 'relative',
+                        overflow: 'hidden',
+                        transition: 'transform 0.5s ease, opacity 0.6s ease',
+                        opacity: loadedImages[index] ? 1 : 0,
+                        transform: loadedImages[index] ? 'scale(1)' : 'scale(0.95)',
+                    }}
+                >
+                    <Image
+                        src={src}
+                        alt={`Banner ${index + 1}`}
+                        layout="responsive"
+                        width={1920}
+                        height={1200}
+                        onLoad={() => handleImageLoad(index)}
+                        style={{
+                            transition: 'opacity 0.6s ease',
+                            opacity: loadedImages[index] ? 1 : 0,
+                        }}
+                    />
+                    <div className="absolute bottom-8 left-8 z-20 text-left">
+                        <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-md">
+                            {index === 0 ? "A Modern Townhouse Design in KSA" : index === 1 ? "Simplicity Redefined: A Versatile Modern Villa Design" : "A Luxury Private Mansion in a Modern Design"}
+                        </h2>
+                        <h3 className="text-lg md:text-xl font-light text-white drop-shadow-md mt-2">
+                            {index === 0 ? "Townhouse Lara Community, Mohammadiya, KSA" : index === 1 ? "White Pearl Villa, Pearl Jumeirah, Dubai" : "Private Mansion, District One"}
+                        </h3>
+                    </div>
                 </div>
-
-                <div className="overlay"></div>
-            </div>
-
-            <div className={`relative w-full aspect-w-16 aspect-h-9 imageContainer`} ref={containerRef}>
-                <Image
-                    src="/featured2.webp"
-                    alt="Banner"
-                    layout="responsive"
-                    width={1920}
-                    height={1200}
-                />
-                <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/3 left-1/2 z-20 top-8 lg:top-20 sm:top-8">
-                    <h2 className={`topLeftHeading font-normal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-neuehaas text-white`}>
-                      Simplicity Redefined: <br />A Versatile Modern Villa Design
-                    </h2>
-                </div> 
-                {/* <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/4 top-2/3 left-1/2 z-20 lg:pt-28 bottom-0">   */}
-                <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/4 left-1/2 z-20 lg:pt-28 bottom-0">  
-                <h2 className={`font-normal text-lg sm:text-xl pl-2 md:pl-4 md:text-2xl lg:text-3xl font-neuehaas text-white`}>
-                       White Pearl Villa, 
-                    </h2>
-                    <h3 className={`font-normal text-sm sm:text-base pl-2 md:pl-4 md:text-lg lg:text-xl font-neuehaas text-white`}>
-                       Pearl Jumeirah, Dubai
-                    </h3>
-                </div>
-                <div className="overlay"></div>
-            </div>
-
-            <div className={`relative w-full aspect-w-16 aspect-h-9 imageContainer`} ref={containerRef}>
-                <Image
-                    src="/featured3.webp"
-                    alt="Banner"
-                    layout="responsive"
-                    width={1920}
-                    height={1200}
-                />
-                <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/3 left-1/2 z-20 top-8 lg:top-20 sm:top-8">
-                    <h2 className={`topLeftHeading font-normal text-xl sm:text-2xl md:text-3xl lg:text-4xl font-neuehaas text-white`}>
-                    A luxury private mansion in a modern design
-                    </h2>
-                </div> 
-                {/* <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/4 top-2/3 left-1/2 z-20 lg:pt-28 bottom-0">   */}
-                <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/4 left-1/2 z-20 lg:pt-28 bottom-0">  
-                <h2 className={`font-normal text-lg sm:text-xl pl-2 md:pl-4 md:text-2xl lg:text-3xl font-neuehaas text-white`}>
-                       Private Mansion, 
-                    </h2>
-                    <h3 className={`font-normal text-sm sm:text-base pl-2 md:pl-4 md:text-lg lg:text-xl font-neuehaas text-white`}>
-                        District One
-                    </h3>
-                </div>
-                <div className="overlay"></div>
-            </div>
+            ))}
         </section>
     );
 };

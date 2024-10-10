@@ -56,14 +56,14 @@ const HeroImage = ({ sliderData }) => {
                 priority={index === 0}
                 loading="eager"
               />
-              {/* <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/3 left-1/2 z-20 lg:pt-24">
+              <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/3 left-1/2 z-20 lg:pt-24">
                 <div className="text-white pl-8 interactive-slider">
                   <span className="text-sm uppercase block font-neuehaas font-light">Crafting Architecture</span>
                   <h2 className="w-full text-3xl lg:text-4xl xl:text-5xl md:leading-12 lg:leading-normal font-semibold relative z-10 font-neuehaas">
                     {item.title}
                   </h2>
                 </div>
-              </div> */}
+              </div>
 
               {/* <div style={{ top: 'auto', bottom: '0' }} className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 z-20 lg:pt-24">
                   <div className="text-white pl-8 interactive-slider">
@@ -74,14 +74,14 @@ const HeroImage = ({ sliderData }) => {
                   </div>
               </div> */}
 
-              <div style={{ top: 'auto', bottom: '0' }} className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 z-20 lg:pt-24">
+              {/* <div style={{ top: 'auto', bottom: '0' }} className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 z-20 lg:pt-24">
                 <div className="text-white pl-8 interactive-slider">
                   <span className="text-sm uppercase block font-neuehaas font-light">Crafting Architecture</span>
                   <h2 className={`text-3xl lg:text-4xl xl:text-5xl md:leading-12 lg:leading-normal font-semibold relative z-10 font-neuehaas ${animation.prevIndex === index ? 'slide-down' : ''} ${animation.curIndex === index ? 'slide-up' : ''}`}>
                     {item.title}
                   </h2>
                 </div>
-              </div>
+              </div> */}
                
               {/* <div className="max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-7xl xl:max-w-7xl 2xl:max-w-7xl w-full absolute transform -translate-x-1/2 -translate-y-2/3 top-2/3 left-1/2 z-20 lg:pt-24 sm:top-auto sm:bottom-0 sm:-translate-y-2/3">
                 <div className="text-white lg:pl-8 interactive-slider">
