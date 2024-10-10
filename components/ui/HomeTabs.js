@@ -23,7 +23,7 @@ const HomeTabs = () => {
             id: "build",
             label: "Build",
             content: "Our Architects and Engineers specialize in Building and Villa Design, furthermore, competent in Architectural, Structural, Construction, MEP, Project Management, BIM, and Interior Design. ",
-            image: "/dji-build-slide.webp",
+            image: "/dji-slide2.webp",
         }
     ];
 
